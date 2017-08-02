@@ -1,0 +1,4 @@
+#/bin/bash
+# Script for copying the relevant files to the svn directory
+
+cp *.m ~/phd/mcstas2.0/mcstas_bot_svn/GuideBot/guide_bot_source/.
