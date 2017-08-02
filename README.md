@@ -31,4 +31,4 @@ When executing the guide_bot_user_*.m file, a project folder is generated contai
     - All necessary McStas components and data files for sources
 - A folder containing scripts for plotting characterization of each optimized guide
 
-
+Further information is given in the manual found in the documentation folder. The aim of the software is to accelerate guide design by allowing designers to investigate a much larger number of possibilities before selecting a specific guide geometry, without spending more time coding. 
