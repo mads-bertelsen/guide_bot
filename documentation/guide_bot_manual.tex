@@ -18,7 +18,8 @@ guide\_bot is meant to run on Unix like systems, but does run on windows with a 
 MATLAB is a necessity and needs a license which is generally available on larger research centers. The MATLAB add-on iFit is needed to do optimizations locally and visualize the results. The add-on is free and can be obtained from \url{http://ifit.mccode.org}, the most appropriate installation form is to download the source package and add the path in MATLAB. McStas is not essential if the user has an account on a supported cluster, but if it is needed to run optimizations locally it should be installed.  Follow the directions from \url{http://mcstas.org} if needed. When running locally, unix is a necessity as iFit does not support MPI on Windows.
 
 \subsection{Obtaining guide\_bot}
-guide\_bot can be downloaded from the McStas webpage, \url{http://mcstas.org}. 
+%guide\_bot can be downloaded from the McStas webpage, \url{http://mcstas.org}. 
+The latest version of guide\_bot can be downloaded from the guide\_bot github repository, \url{https://github.com/mads-bertelsen/guide_bot}.
 
 %\subsection{Obtaining guide\_bot}
 %Downloading the guide\_bot package is done from the terminal with the following command:
@@ -227,6 +228,7 @@ K & Kink & kink angle, kink direction \\
 C & Curved guide & reflectivity, angle, direction \\
 Selene & Selene guide & reflectivity, slit system \\
 Slit & Slit & none \\
+M & Monochromator & dedicated manual \\
 \hline
 \end{tabular}
 \caption{The available modules of which an input string describing a guide can be assembled. The special options are possible options in addition to the general options listed in table \ref{general-options}.}
@@ -407,8 +409,6 @@ options.enable\_nested\_compile & 0,1 \\
 \label{computing-options}
 \end{table}
 
-
-\clearpage
 \section{Details on modules}\label{module-info}
 As table \ref{modules} showed there are some further options to some of the modules. These are all listed in the short summary of each module in the list below. It is important that each input string starts and end with one of the simple guide modules, straight (S), parabolic (P) or elliptic (E).
 
@@ -449,6 +449,8 @@ The slit module is very rarely useful, because under normal circumstances each m
 P G(start=6.5,length=0.2) Slit(StartWidth=0.02,StartHeight=0.02) G(length=0.2) E
 \end{verbatim}
 
+\subsection{Monochromator: M}
+The monochromator module was recently contributed by Leland Harriger, who provided a dedicated manual for the module. The manual can be found in the documentation folder of the software, and will be merged with this documentation at a later date. The monochromator module is capable of optimizing over a wavelength range with appropriate rotation for each small wavelength range. Focusing is available in both horizontal and vertical direction, which can be optimized together with the guide.
 
 \section{Scanning demands}
 It is possible to scan some of the parameters in one or two dimensions. This can be done by simply entering a vector in MATLAB where you would otherwise just specify a scalar. The parameters which allow scans are shown in table \ref{scannames}.
