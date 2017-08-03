@@ -22,10 +22,13 @@ Which now sets a minimum length of 5 m for the straight section, a  3 cm width a
 Many of such input strings can be given.
 
 When executing the guide_bot_user_*.m file, a project folder is generated containing:
--compile_all.sh : script for compiling all generated code
--launch_all.sh  : script for launching all jobs on a supported cluster
--A folder for each input string containing:
-   - McStas instrument files describing the desired geometry and with appropriate input.
-   - iFit MATLAB optimization script(s) including all parameters to be optimized and their limits
-   - All necessary McStas components and data files for sources
--A folder containing scripts for plotting characterization of each optimized guide
+
+- compile_all.sh script for compiling all generated code
+- launch_all.sh script for launching all jobs on a supported cluster
+- A folder for each input string containing:
+    - McStas instrument files describing the desired geometry and with appropriate input.
+    - iFit MATLAB optimization script(s) including all parameters to be optimized and their limits
+    - All necessary McStas components and data files for sources
+- A folder containing scripts for plotting characterization of each optimized guide
+
+Further information is given in the manual found in the documentation folder. The aim of the software is to accelerate guide design by allowing designers to investigate a much larger number of possibilities before selecting a specific guide geometry, without spending more time coding. 
