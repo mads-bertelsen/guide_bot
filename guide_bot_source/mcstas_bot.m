@@ -7089,43 +7089,6 @@ end
 %%%%%%%%% END OF LELAND2 MODIFICATION (clustering 2/3) %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if strcmp(options_general.cluster,'PSI')
-l{1}='#!/bin/bash -l';
-else
-l{1}='#!/bin/bash';
-end
-l{end+1}='#';
-l{end+1}='# Made by mcstas_bot';
-l{end+1}='';
-l{end+1}=['#SBATCH --job-name=' filename scanname];
-l{end+1}=['#SBATCH --error=err_' filename scanname '.txt'];
-l{end+1}=['#SBATCH --output=out_' filename scanname '.txt'];
-l{end+1}='#SBATCH --nodes=1-1';
-if strcmp(options_general.queue,'verylong')
-l{end+1}='#SBATCH --exclude r3n9b3';
-elseif strcmp(options_general.queue,'long') && strcmp(options_general.cluster,'ESSS')
-l{end+1}='#SBATCH --exclude r1n16,r2n18,r1n4,r1n6,r1n15,r1n38,r2n20';    
-end
-l{end+1}=['#SBATCH --partition ' options_general.queue];    
-l{end+1}=['#SBATCH --time ' options_general.time];
-l{end+1}='# the --exclusive is needed when running OpenMPI';
-l{end+1}='# it will allocate 1x12 core per node';
-l{end+1}='#SBATCH --exclusive';
-l{end+1}='';
-if strcmp(options_general.queue,'verylong')
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 16 * p "| dc`';    
-else
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
-end
-l{end+1}='echo $NUMCORES > NUMCORES.DAT';
-l{end+1}='';
-for jj = 1:length(options_general.modules_node)
-l{end+1}=['module load ' options_general.modules_node{jj}]; 
-end
-l{end+1}='';
-l{end+1}='# Gives a set of matlab commands to iFit. NUMCORES.DAT read from matlab script';
-l{end+1}=['cat run_' filename scanname '_ifit.m | ' options_general.cluster_path 'run_ifit.sh ' options_general.cluster_path 'MATLAB_Compiler_Runtime/v716/'];
-
 BatchStr='';
 for i=1:length(l)
   BatchStr=[BatchStr l{i} '\n'];
