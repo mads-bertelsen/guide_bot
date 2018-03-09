@@ -138,7 +138,8 @@ elseif strcmp(globalinfo.modules(globalinfo.modulelist(ghost_globalinfo.real_ind
 elseif strcmp(globalinfo.modules(globalinfo.modulelist(ghost_globalinfo.real_index(index))),'M')%% corresponds to Monochromator
     l{1} = 'fprintf(fp, "M\\n");';
     l{end+1} = ['fprintf(fp,"Dim: %%lf \\t %%lf \\t %%lf\\n",length' num ',startx' num ',starty' num ');';];
-    Mono_options = Parse_options(globalinfo.options{last-index+1});
+    %Mono_options = Parse_options(globalinfo.options{last-index+1});
+    Mono_options = Parse_options(globalinfo.options{length(globalinfo.options)-index+1});
     if (~strcmp(Mono_options.HGeometry,'flat') && ~strcmp(Mono_options.VGeometry,'flat'))
         l{end+1} = ['fprintf(fp,"Lf: %%lf \\t %%lf\\n",HL1_' num ',VL1_' num ');';];
     elseif (strcmp(Mono_options.HGeometry,'flat') && ~strcmp(Mono_options.VGeometry,'flat'))

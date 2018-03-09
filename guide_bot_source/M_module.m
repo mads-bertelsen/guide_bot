@@ -11,9 +11,6 @@ num=num2str(index);
 defaultnames=fieldnames(defaults);
 linp=length(McStasStr.input);
 
-% This variable determines whether to use a reflecivity constant r0 or
-% reflectivity file rfile. (0 --> use r0, 1 --> use rfile
-RfileCheck = 0;
 
 %%
 
@@ -29,21 +26,24 @@ else
 end
 
 % Monochromator reflectivity (single value)
+r0Index = linp+1;
+McStasStr.input{r0Index}=['r0' num];
 if max(ismember(defaultnames,'r0'))
-    r0=defaults.r0;
+    McStasStr.inputvalue(r0Index)=defaults.r0;
 else    
-    r0='0.7';
+    McStasStr.inputvalue(r0Index)=0.7;
 end
 
 % Monochromator reflectivty (file)
 % Note: McStasStr.inputvalue is a 1D array and cannot accept data type char
 if max(ismember(defaultnames,'Rfile'))
     rfile=defaults.Rfile;
-    RfileCheck = 1;
+else
+    rfile='NULL';
 end
 
 % Monochromator d-spacing (Ang)
-dMIndex=linp+1;
+dMIndex=linp+2;
 McStasStr.input{dMIndex}=['dM' num];
 if max(ismember(defaultnames,'dM'))
     McStasStr.inputvalue(dMIndex)=defaults.dM;    
@@ -52,7 +52,7 @@ else
 end
 
 % Monochromator vertical mosaic (minutes arc)
-VmosIndex=linp+2;
+VmosIndex=linp+3;
 McStasStr.input{VmosIndex}=['Vmos' num];
 if max(ismember(defaultnames,'Vmos'))
     McStasStr.inputvalue(VmosIndex)=defaults.Vmos;
@@ -61,7 +61,7 @@ else
 end
 
 % Monochromator horizontal mosaic (minutes arc)
-HmosIndex=linp+3;
+HmosIndex=linp+4;
 McStasStr.input{HmosIndex}=['Hmos' num];
 if max(ismember(defaultnames,'Hmos'))
     McStasStr.inputvalue(HmosIndex)=defaults.Hmos;
@@ -77,7 +77,7 @@ end
     
 
 % Number of vertical segments
-NVIndex=linp+4;
+NVIndex=linp+5;
 McStasStr.input{NVIndex}=['NV' num];
 if max(ismember(defaultnames,'NV'))
     McStasStr.inputvalue(NVIndex)=defaults.NV;
@@ -86,7 +86,7 @@ else
 end
 
 % Gap between segments (m)
-SegGapIndex=linp+5;
+SegGapIndex=linp+6;
 McStasStr.input{SegGapIndex}=['SegGap' num];
 if max(ismember(defaultnames,'SegGap'))
     McStasStr.inputvalue(SegGapIndex)=defaults.SegGap;
@@ -95,7 +95,7 @@ else
 end
 
 % Number of blades
-BladeNIndex=linp+6;
+BladeNIndex=linp+7;
 McStasStr.input{BladeNIndex}=['BladeN' num];
 if max(ismember(defaultnames,'BladeN'))
     McStasStr.inputvalue(BladeNIndex)=defaults.BladeN;
@@ -104,7 +104,7 @@ else
 end
 
 % Width of an individual blade (m)
-BladeWIndex=linp+7;
+BladeWIndex=linp+8;
 McStasStr.input{BladeWIndex}=['BladeW' num];
 if max(ismember(defaultnames,'BladeW'))
     McStasStr.inputvalue(BladeWIndex)=defaults.BladeW;
@@ -113,7 +113,7 @@ else
 end
 
 % Height of an individual blade (m)
-BladeHIndex=linp+8;
+BladeHIndex=linp+9;
 McStasStr.input{BladeHIndex}=['BladeH' num];
 if max(ismember(defaultnames,'BladeH'))
     McStasStr.inputvalue(BladeHIndex)=defaults.BladeH;
@@ -122,7 +122,7 @@ else
 end
 
 % Gap between blades (m)
-BladeGapIndex=linp+9;
+BladeGapIndex=linp+10;
 McStasStr.input{BladeGapIndex}=['BladeGap' num];
 if max(ismember(defaultnames,'BladeGap'))
     McStasStr.inputvalue(BladeGapIndex)=defaults.BladeGap;
@@ -132,7 +132,7 @@ end
 
 % Monochromator Binning (0 -> No binning, -1 -> Binning, pos. val. ->
 % Sample single Ei with Ei = pos. val. (meV) )
-EbinIndex=linp+10;
+EbinIndex=linp+11;
 McStasStr.input{EbinIndex}=['Ebin' num];
 if max(ismember(defaultnames,'Ebin'))
     McStasStr.inputvalue(EbinIndex)=defaults.Ebin;
@@ -209,10 +209,9 @@ for ops=1:length(options)
         case 'L2_override'
             L2_override = str2num(value_ops);
         case 'r0'
-           r0=value_ops;
+           McStasStr.inputvalue(r0Index)=str2num(value_ops);
         case 'Rfile'
             rfile = value_ops;
-            RfileCheck = 1;
         case 'dM'
             McStasStr.inputvalue(dMIndex)=str2num(value_ops);
         case 'Vmos'
@@ -239,11 +238,7 @@ for ops=1:length(options)
         case 'VGeometry'
             VGeo = value_ops;
         case 'Ebin'
-            if ischar(value_ops)  % if Ebin = 'show' then just initialize to be -2; mcstas_bot handles 'show' option.
-                McStasStr.inputvalue(EbinIndex) = -2;
-            else
-                McStasStr.inputvalue(EbinIndex) = str2num(value_ops);
-            end
+            McStasStr.inputvalue(EbinIndex) = str2num(value_ops);
         case 'BeamDir'
             BeamDir = value_ops;
         case 'MinimalistMono'
@@ -491,7 +486,7 @@ end
 if L2_override == -1 % If BeamDir = reflect then this is what you want
     l{end+1} = ['L2_' num ' = Mod_sample - endPoint' num ' + (length' num ')/2;'];
 else % If BeamDir = transmit then the monochromator sample distance must be put in by hand.
-    l{end+1} = ['L2_' num ' = ' L2_override ';'];
+    l{end+1} = ['L2_' num ' = ' num2str(L2_override) ';'];
 end
 
 
@@ -905,18 +900,6 @@ l{end+1} = '';
 
 % Setup COMPONENT definitions
 
-% Appends the correct reflectivity setting to the monochromator comp.
-if RfileCheck == 1
-    rstring = 'reflect';
-    rvalue = rfile;
-    r_component_input = ['"' rfile '"'];
-else
-    rstring = 'r0';
-    rvalue = r0;
-    r_component_input = rvalue;
-end
-
-
 % COMPONONT definition is written different for each horizontal geometry.
 switch (HGeo)
     case 'rowland'
@@ -929,7 +912,7 @@ switch (HGeo)
         % Blades
         for i = 1:numBlades
             l{end+1} = ['COMPONENT mono' num '_' num2str(i) ' = Monochromator_curved_dynamic(DM = dM' num ', mosaich = Hmos' num ', mosaicv = Vmos' num ','];
-            l{end+1} = ['width = BladeW' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NV = NV' num ', NH = 1, ' rstring ' = ' r_component_input ', binscale = var_binscale' num ', mvalue = var_m' num ')'];
+            l{end+1} = ['width = BladeW' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NV = NV' num ', NH = 1, r0 = r0' num ', reflect = "' rfile '", binscale = var_binscale' num ', mvalue = var_m' num ')'];
             l{end+1} = ['AT (0, 0, Mpos' num '_' num2str(i) ') RELATIVE mono_arm' num];
             l{end+1} = ['ROTATED (0, PHA' num '_' num2str(i) ', 0) RELATIVE mono_arm' num];
             l{end+1} = '';
@@ -948,7 +931,7 @@ switch (HGeo)
         % Blades
         for i = 1:numBlades
             l{end+1} = ['COMPONENT mono' num '_' num2str(i) ' = Monochromator_curved_dynamic(DM = dM' num ', mosaich = Hmos' num ', mosaicv = Vmos' num ','];
-            l{end+1} = ['width = BladeW' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NV = NV' num ', NH = 1, ' rstring ' = ' r_component_input ', binscale = var_binscale' num ', mvalue = var_m' num ')'];
+            l{end+1} = ['width = BladeW' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NV = NV' num ', NH = 1, r0 = r0' num ', reflect = "' rfile '", binscale = var_binscale' num ', mvalue = var_m' num ')'];
             l{end+1} = ['AT (0, 0, Mpos' num '_' num2str(i) ') RELATIVE mono_arm' num];
             l{end+1} = ['ROTATED (0, 0, 0) RELATIVE mono_arm' num];
             l{end+1} = 'GROUP MONO';
@@ -963,7 +946,7 @@ switch (HGeo)
         
         % Monochromator
         l{end+1} = ['COMPONENT mono' num '_1 = Monochromator_curved_dynamic(DM = dM' num ', mosaich = Hmos' num ', mosaicv = Vmos' num ','];
-        l{end+1} = ['width = length' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NH = BladeN' num ', NV = NV' num ', ' rstring ' = ' r_component_input ', binscale = var_binscale' num ', mvalue = var_m' num ')'];
+        l{end+1} = ['width = length' num ', height = BladeH' num ', gap = SegGap' num ', binning = Ebin' num ', WaveMin = WaveMin, WaveMax = WaveMax, RstarV=VRstar' num ', RstarH=HRstar' num ', NH = BladeN' num ', NV = NV' num ', r0 = r0' num ', reflect = "' rfile '", binscale = var_binscale' num ', mvalue = var_m' num ')'];
         l{end+1} = ['AT (0, 0, 0) RELATIVE mono_arm' num];
         l{end+1} = ['ROTATED (0, 0, 0) RELATIVE mono_arm' num];
         l{end+1} = '';

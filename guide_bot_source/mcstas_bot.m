@@ -1817,18 +1817,37 @@ unsure=1;j=0;
 while (unsure==1)
     j=j+1;
     if exist(['./' Project_name '/' filename ])>0.5
-       if exist(['./' Project_name '/' filename '/input.txt'])>0.5
-           fid=fopen(['./' Project_name '/' filename '/input.txt']);
-           %test=textscan(fid,'%s');
-           test=fgetl(fid);
-           fclose(fid);
-           if strcmp(input,test)
-               unsure = 0; % Just overwrite, same input!
-               disp('overwriting old instrument folder without deleting')
-           end
-       else
-           unsure=0;
-       end
+        
+        % Leland commented this out again because using a parameter scan to repeate
+        % an optimization multiple times, eg: demands.Hsize = [2 2 2 2 2]; causes
+        % some problem with parfor (atleast when I do it using the NCNR
+        % clustering.) Thus, I reverted to my original method of commenting
+        % out this block and using the same constructor multiple times, eg:
+        % input{1} =     'S(SSPINS) G(GSPINS) M(MSPINS)';
+        % input{end+1} = 'S(SSPINS) G(GSPINS) M(MSPINS)';
+        % Pretty sure the problem has to do with parfor running multiple
+        % jobs in the same folder, which is what happens when you do a
+        % parameter scan. I have no plans on debuging this beyond my
+        % existing work around of commenting out this block and using
+        % identical constructors, which forces guide_bot to place each
+        % optimization in seperate folders. Recall, that commenting this
+        % out kills the overwrite and triggers guide_bot to make folders
+        % with names (in the above case) SGM and SGM_alt1. 
+        
+%       if exist(['./' Project_name '/' filename '/input.txt'])>0.5
+%           fid=fopen(['./' Project_name '/' filename '/input.txt']);
+%           %test=textscan(fid,'%s');
+%           test=fgetl(fid);
+%           fclose(fid);
+%           if strcmp(input,test)
+%               unsure = 0; % Just overwrite, same input!
+%               disp('overwriting old instrument folder without deleting')
+%           end
+%       else
+%           unsure=0;
+%       end
+       
+       
     else
         unsure=0;
     end
@@ -5233,6 +5252,30 @@ l{end+1}='';
 l{end+1}='optimal.WaveMin=''0.1'';';
 l{end+1}='optimal_ess.WaveMin=''0.1'';';
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% LELAND2 MODIFICATION %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For analysis after optimization, the monochromator configuration is standardized.
+% Change to Ebin = -3 if a monochromator is present in reflection mode or
+% if it is in transmit mode and dynamic (ie: if someone were to define a
+% mono that was both static and transmit, then chances are they only need
+% to look at performance with respect to this fixed configuration.
+
+% Determine if a Monochromator in reflection mode is present
+for i = 1:numel(modulelist)
+    if strcmp(modules{modulelist(i)},'M') % Check for monochromator
+        monoopts = Parse_options(globalinfo.options{i});
+        if strcmp(monoopts.BeamDir, 'reflect') || monoopts.Ebin <= 0 % Check if monochromator is in reflection mode or dynamic
+            monoindex = num2str(1+ length(modulelist) - i);
+            l{end+1} = ['optimal.Ebin' monoindex ' = ''-3'';'];
+            l{end+1} = ['optimal_ess.Ebin' monoindex ' = ''-3'';'];
+        end
+    end
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% END OF LELAND2 MODIFICATION %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 if max(ismember(fieldnames(options_general),'max_wavelength_investigated_multiplier')) == 0
     if (demands.WaveLmax<3)
     l{end+1}=['optimal.WaveMax=''' num2str(demandscan.WaveLmax*3) ''';'];
@@ -5427,11 +5470,31 @@ end
 for i=1:NumSnaps
 l{end+1}='';    
 l{end+1}=['options_single{select}.dir=[filename ''wave' num2str(i) '''];'];
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% LELAND MODIFICATION3 %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use a static Mono (Ebin = positive val) instead of a dynamic mono (Ebin =
+% negaive val) for analyzing wavelength snapshots.
+% Determine if a Monochromator in reflection mode is present
+for j = 1:numel(modulelist)
+    if strcmp(modules{modulelist(j)},'M') % Check for monochromator
+        monoopts = Parse_options(globalinfo.options{j});
+        if strcmp(monoopts.BeamDir, 'reflect') || monoopts.Ebin <= 0 % Check if monochromator is in reflection mode or dynamic
+            monoindex = num2str(1+ length(modulelist) - j);
+            l{end+1} = ['optimal.Ebin' monoindex ' = 81.81/(wavecenters(' num2str(i) '))^2;'];
+            l{end+1} = ['optimal_ess.Ebin' monoindex ' = 81.81/(wavecenters(' num2str(i) '))^2;'];
+        end
+    end
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% END OF LELAND MODIFICATION %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 % guide_bot was updated to allow two different text_modes dependent on the
 % iFit version, and this needs to be taken into account for the edits by
 % Leland.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% LELAND MODIFICATION %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -6957,7 +7020,7 @@ if mono_present ==1
         end
     end
     if not_found
-        [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/	.m'],['./' Project_name '/output/analysis/.']);
+        [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/FOM_table.m'],['./' Project_name '/output/analysis/.']);
     end
     
     % move baseline .mat file
@@ -7022,7 +7085,7 @@ if strcmp(options_general.cluster, 'NCNR')
     l{end+1}='#';
     l{end+1}='# Made by mcstas_bot';
     l{end+1}='';
-    l{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename scanname '/; tic; try; run ' gb_loc Project_name '/' filename scanname '/run_' filename scanname '_ifit.m; catch; end; toc; quit" > matlab_output.log &'];
+    l{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename '/; tic; try; run ' gb_loc Project_name '/' filename '/run_' filename scanname '_ifit.m; catch; end; toc; quit" > matlab_output' scanname '.log &'];
 
     % Need to also write batch scripts for Intermediate Brilliance Analysis
     if isfield(options_general,'Intermediate_Brilliance')
@@ -7032,7 +7095,7 @@ if strcmp(options_general.cluster, 'NCNR')
             l_IM{end+1}='#';
             l_IM{end+1}='# Made by mcstas_bot';
             l_IM{end+1}='';
-            l_IM{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename scanname '/; tic; try; run ' gb_loc Project_name '/' filename scanname '/' filename scanname '_' fnamesIM{i} '_ifit.m; catch; end; toc; quit" > ' fnamesIM{i} '_matlab_output.log &'];
+            l_IM{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename '/; tic; try; run ' gb_loc Project_name '/' filename '/' filename scanname '_' fnamesIM{i} '_ifit.m; catch; end; toc; quit" > ' fnamesIM{i} '_matlab_output' scanname '.log &'];
             
             IM_BatchStr='';
             for j=1:length(l)

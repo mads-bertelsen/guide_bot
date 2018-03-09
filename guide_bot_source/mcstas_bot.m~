@@ -1817,18 +1817,23 @@ unsure=1;j=0;
 while (unsure==1)
     j=j+1;
     if exist(['./' Project_name '/' filename ])>0.5
-       if exist(['./' Project_name '/' filename '/input.txt'])>0.5
-           fid=fopen(['./' Project_name '/' filename '/input.txt']);
-           %test=textscan(fid,'%s');
-           test=fgetl(fid);
-           fclose(fid);
-           if strcmp(input,test)
-               unsure = 0; % Just overwrite, same input!
-               disp('overwriting old instrument folder without deleting')
-           end
-       else
-           unsure=0;
-       end
+        
+        % Leland Commented out again for debug
+        
+%       if exist(['./' Project_name '/' filename '/input.txt'])>0.5
+%           fid=fopen(['./' Project_name '/' filename '/input.txt']);
+%           %test=textscan(fid,'%s');
+%           test=fgetl(fid);
+%           fclose(fid);
+%           if strcmp(input,test)
+%               unsure = 0; % Just overwrite, same input!
+%               disp('overwriting old instrument folder without deleting')
+%           end
+%       else
+%           unsure=0;
+%       end
+       
+       
     else
         unsure=0;
     end
@@ -3101,7 +3106,9 @@ l_ana{1}='';
 
 if isfield(options_general,'fom_weight')
     % fom_weight sets a wavelength between the min and max wavelength.
-    % For wavelength below this, the weight i
+    % For wavelengths below this, the weight is not adjusted.
+    % For wavelengths above this, the weight is reduced linearily to 0 at
+    % the maximum wavelength.
     
 l_opt{1}='  EXTEND';
 l_opt{end+1}='    %%{';
@@ -5231,6 +5238,30 @@ l{end+1}='';
 l{end+1}='optimal.WaveMin=''0.1'';';
 l{end+1}='optimal_ess.WaveMin=''0.1'';';
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% LELAND2 MODIFICATION %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For analysis after optimization, the monochromator configuration is standardized.
+% Change to Ebin = -3 if a monochromator is present in reflection mode or
+% if it is in transmit mode and dynamic (ie: if someone were to define a
+% mono that was both static and transmit, then chances are they only need
+% to look at performance with respect to this fixed configuration.
+
+% Determine if a Monochromator in reflection mode is present
+for i = 1:numel(modulelist)
+    if strcmp(modules{modulelist(i)},'M') % Check for monochromator
+        monoopts = Parse_options(globalinfo.options{i});
+        if strcmp(monoopts.BeamDir, 'reflect') || monoopts.Ebin <= 0 % Check if monochromator is in reflection mode or dynamic
+            monoindex = num2str(1+ length(modulelist) - i);
+            l{end+1} = ['optimal.Ebin' monoindex ' = ''-3'';'];
+            l{end+1} = ['optimal_ess.Ebin' monoindex ' = ''-3'';'];
+        end
+    end
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% END OF LELAND2 MODIFICATION %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 if max(ismember(fieldnames(options_general),'max_wavelength_investigated_multiplier')) == 0
     if (demands.WaveLmax<3)
     l{end+1}=['optimal.WaveMax=''' num2str(demandscan.WaveLmax*3) ''';'];
@@ -6955,7 +6986,7 @@ if mono_present ==1
         end
     end
     if not_found
-        [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/	.m'],['./' Project_name '/output/analysis/.']);
+        [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/FOM_table.m'],['./' Project_name '/output/analysis/.']);
     end
     
     % move baseline .mat file
@@ -7020,7 +7051,7 @@ if strcmp(options_general.cluster, 'NCNR')
     l{end+1}='#';
     l{end+1}='# Made by mcstas_bot';
     l{end+1}='';
-    l{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename scanname '/; tic; try; run ' gb_loc Project_name '/' filename scanname '/run_' filename scanname '_ifit.m; catch; end; toc; quit" > matlab_output.log &'];
+    l{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename '/; tic; try; run ' gb_loc Project_name '/' filename '/run_' filename scanname '_ifit.m; catch; end; toc; quit" > matlab_output' scanname '.log &'];
 
     % Need to also write batch scripts for Intermediate Brilliance Analysis
     if isfield(options_general,'Intermediate_Brilliance')
@@ -7030,7 +7061,7 @@ if strcmp(options_general.cluster, 'NCNR')
             l_IM{end+1}='#';
             l_IM{end+1}='# Made by mcstas_bot';
             l_IM{end+1}='';
-            l_IM{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename scanname '/; tic; try; run ' gb_loc Project_name '/' filename scanname '/' filename scanname '_' fnamesIM{i} '_ifit.m; catch; end; toc; quit" > ' fnamesIM{i} '_matlab_output.log &'];
+            l_IM{end+1}=['nohup matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(''' ifit_loc ''')); cd ' gb_loc Project_name '/' filename '/; tic; try; run ' gb_loc Project_name '/' filename '/' filename scanname '_' fnamesIM{i} '_ifit.m; catch; end; toc; quit" > ' fnamesIM{i} '_matlab_output' scanname '.log &'];
             
             IM_BatchStr='';
             for j=1:length(l)
@@ -7086,43 +7117,6 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% END OF LELAND2 MODIFICATION (clustering 2/3) %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-if strcmp(options_general.cluster,'PSI')
-l{1}='#!/bin/bash -l';
-else
-l{1}='#!/bin/bash';
-end
-l{end+1}='#';
-l{end+1}='# Made by mcstas_bot';
-l{end+1}='';
-l{end+1}=['#SBATCH --job-name=' filename scanname];
-l{end+1}=['#SBATCH --error=err_' filename scanname '.txt'];
-l{end+1}=['#SBATCH --output=out_' filename scanname '.txt'];
-l{end+1}='#SBATCH --nodes=1-1';
-if strcmp(options_general.queue,'verylong')
-l{end+1}='#SBATCH --exclude r3n9b3';
-elseif strcmp(options_general.queue,'long') && strcmp(options_general.cluster,'ESSS')
-l{end+1}='#SBATCH --exclude r1n16,r2n18,r1n4,r1n6,r1n15,r1n38,r2n20';    
-end
-l{end+1}=['#SBATCH --partition ' options_general.queue];    
-l{end+1}=['#SBATCH --time ' options_general.time];
-l{end+1}='# the --exclusive is needed when running OpenMPI';
-l{end+1}='# it will allocate 1x12 core per node';
-l{end+1}='#SBATCH --exclusive';
-l{end+1}='';
-if strcmp(options_general.queue,'verylong')
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 16 * p "| dc`';    
-else
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
-end
-l{end+1}='echo $NUMCORES > NUMCORES.DAT';
-l{end+1}='';
-for jj = 1:length(options_general.modules_node)
-l{end+1}=['module load ' options_general.modules_node{jj}]; 
-end
-l{end+1}='';
-l{end+1}='# Gives a set of matlab commands to iFit. NUMCORES.DAT read from matlab script';
-l{end+1}=['cat run_' filename scanname '_ifit.m | ' options_general.cluster_path 'run_ifit.sh ' options_general.cluster_path 'MATLAB_Compiler_Runtime/v716/'];
 
 BatchStr='';
 for i=1:length(l)
