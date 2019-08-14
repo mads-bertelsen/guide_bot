@@ -5725,34 +5725,34 @@ l{end+1}='   ';
 l{end+1}='   if reflogic';
 l{end+1}='   guide_end_lambda = assign_by_title(''Lmon_guide_end.'',monitors);';
 l{end+1}='   DIV2D_ref=assign_by_title(''Div2d_sample.'',monitors_ref)';
-l{end+1}='   DIV2D=assign_by_title(''Div2d_sample.'',monitors)/DIV2D_ref.Data.Mean;';
+l{end+1}='   DIV2D=assign_by_title(''Div2d_sample.'',monitors)/ifit_mean(DIV2D_ref);';
 %l{end+1}='   DIV2D=monitors(3)/monitors_ref(3).Data.Mean;';
 l{end+1}='   PSD2D_ref=assign_by_title(''PSD_sample.'',monitors_ref);';
-l{end+1}='   PSD2D=assign_by_title(''PSD_sample.'',monitors)/PSD2D_ref.Data.Mean;';
+l{end+1}='   PSD2D=assign_by_title(''PSD_sample.'',monitors)/ifit_mean(PSD2D_ref);';
 %l{end+1}='   PSD2D=monitors(4)/monitors_ref(4).Data.Mean;';
 l{end+1}='   HPSD_ref=assign_by_title(''HPSD_sample.'',monitors_ref);';
-l{end+1}='   HPSD=assign_by_title(''HPSD_sample.'',monitors)/HPSD_ref.Data.Mean;';
+l{end+1}='   HPSD=assign_by_title(''HPSD_sample.'',monitors)/ifit_mean(HPSD_ref);';
 %l{end+1}='   HPSD.x = HPSD.x*100; %%Conversion to cm';
 l{end+1}='   HPSD{1} = HPSD{1}.*100; %%Conversion to cm';
 %l{end+1}='   HPSD=monitors(5)/monitors_ref(5).Data.Mean;';
 l{end+1}='   VPSD_ref=assign_by_title(''VPSD_sample.'',monitors_ref);';
-l{end+1}='   VPSD=assign_by_title(''VPSD_sample.'',monitors)/VPSD_ref.Data.Mean;';
+l{end+1}='   VPSD=assign_by_title(''VPSD_sample.'',monitors)/ifit_mean(VPSD_ref);';
 %l{end+1}='   VPSD.x = VPSD.x*100; %%Conversion to cm';
 l{end+1}='   VPSD{1} = VPSD{1}.*100; %%Conversion to cm';
 %l{end+1}='   VPSD=monitors(6)/monitors_ref(6).Data.Mean;';
 l{end+1}='   HDIV_ref=assign_by_title(''Hdiv_sample.'',monitors_ref);';
-l{end+1}='   HDIV=assign_by_title(''Hdiv_sample.'',monitors)/HDIV_ref.Data.Mean;';
+l{end+1}='   HDIV=assign_by_title(''Hdiv_sample.'',monitors)/ifit_mean(HDIV_ref);';
 %l{end+1}='   HDIV=monitors(7)/monitors_ref(7).Data.Mean;';
 l{end+1}='   VDIV_ref=assign_by_title(''Vdiv_sample.'',monitors_ref);';
-l{end+1}='   VDIV=assign_by_title(''Vdiv_sample.'',monitors)/VDIV_ref.Data.Mean;';
+l{end+1}='   VDIV=assign_by_title(''Vdiv_sample.'',monitors)/ifit_mean(VDIV_ref);';
 %l{end+1}='   VDIV=monitors(8)/monitors_ref(8).Data.Mean;';
 l{end+1}='   HACCP_ref=assign_by_title(''acceptance_x_divx.'',monitors_ref);';
-l{end+1}='   HACCP=assign_by_title(''acceptance_x_divx.'',monitors)/HACCP_ref.Data.Mean;';
+l{end+1}='   HACCP=assign_by_title(''acceptance_x_divx.'',monitors)/ifit_mean(HACCP_ref);';
 %l{end+1}='   HACCP.y = HACCP.y*100; %%Conversion to cm';
 l{end+1}='   HACCP{2} = HACCP{2}.*100; %%Conversion to cm';
 %l{end+1}='   HACCP=monitors(9)/monitors_ref(9).Data.Mean;';
 l{end+1}='   VACCP_ref=assign_by_title(''acceptance_y_divy.'',monitors_ref);';
-l{end+1}='   VACCP=assign_by_title(''acceptance_y_divy.'',monitors)/HACCP_ref.Data.Mean;';
+l{end+1}='   VACCP=assign_by_title(''acceptance_y_divy.'',monitors)/ifit_mean(HACCP_ref);';
 %l{end+1}='   VACCP.y = VACCP.y*100; %%Conversion to cm';
 l{end+1}='   VACCP{2} = VACCP{2}.*100; %%Conversion to cm';
 %l{end+1}='   VACCP=monitors(10)/monitors_ref(10).Data.Mean;';
@@ -5760,20 +5760,20 @@ l{end+1}='   LAMBDA_B_RAW_monitor=assign_by_title(''Lmon_sample_B.'',monitors);'
 %l{end+1}='   LAMBDA_B_RAW_monitor=monitors(11);';
 l{end+1}='   LAMBDA_B_RAW=LAMBDA_B_RAW_monitor.Data.values(1);';
 l{end+1}='   LAMBDA_B_ref=assign_by_title(''Lmon_sample_B.'',monitors_ref);';
-l{end+1}='   LAMBDA_B=assign_by_title(''Lmon_sample_B.'',monitors)/LAMBDA_B_ref.Data.Mean;';
+l{end+1}='   LAMBDA_B=assign_by_title(''Lmon_sample_B.'',monitors)/ifit_mean(LAMBDA_B_ref);';
 %l{end+1}='   LAMBDA_B=monitors(11)/monitors_ref(11).Data.Mean;';
 l{end+1}='   DIV2D_B_ref=assign_by_title(''Div2d_sample_maxdiv.'',monitors_ref);';
-l{end+1}='   DIV2D_B=assign_by_title(''Div2d_sample_maxdiv.'',monitors)/DIV2D_B_ref.Data.Mean;';
+l{end+1}='   DIV2D_B=assign_by_title(''Div2d_sample_maxdiv.'',monitors)/ifit_mean(DIV2D_B_ref);';
 %l{end+1}='   DIV2D_B=monitors(12)/monitors_ref(12).Data.Mean;';
 l{end+1}='   PSD2D_B_ref=assign_by_title(''PSD_sample_maxdiv.'',monitors_ref);';
-l{end+1}='   PSD2D_B=assign_by_title(''PSD_sample_maxdiv.'',monitors)/PSD2D_B_ref.Data.Mean;';
+l{end+1}='   PSD2D_B=assign_by_title(''PSD_sample_maxdiv.'',monitors)/ifit_mean(PSD2D_B_ref);';
 %l{end+1}='   PSD2D_B=monitors(13)/monitors_ref(13).Data.Mean;';
 
 % Allways use mean, the brilliance measurement is always made on a
 % moderator of sufficient size for even phase-space illumination.
 %if reqscan.moderator_size_x*100 > 4*demandscan.Hsize; %cm and m
 l{end+1}='   HPSD_B_ref=assign_by_title(''HPSD_sample_maxdiv.'',monitors_ref);';
-l{end+1}='   HPSD_B=assign_by_title(''HPSD_sample_maxdiv.'',monitors)/HPSD_B_ref.Data.Mean;';
+l{end+1}='   HPSD_B=assign_by_title(''HPSD_sample_maxdiv.'',monitors)/ifit_mean(HPSD_B_ref);';
 %l{end+1}='   HPSD_B.x = HPSD_B.x*100; %%Conversion to cm';
 l{end+1}='   HPSD_B{1} = HPSD_B{1}.*100; %%Conversion to cm';
 %l{end+1}='   HPSD_B=monitors(14)/monitors_ref(14).Data.Mean;';
@@ -5782,7 +5782,7 @@ l{end+1}='   HPSD_B{1} = HPSD_B{1}.*100; %%Conversion to cm';
 %end
 %if reqscan.moderator_size_y*100 > 4*demandscan.Vsize; %cm and m
 l{end+1}='   VPSD_B_ref=assign_by_title(''VPSD_sample_maxdiv.'',monitors_ref)';
-l{end+1}='   VPSD_B=assign_by_title(''VPSD_sample_maxdiv.'',monitors)/VPSD_B_ref.Data.Mean;';
+l{end+1}='   VPSD_B=assign_by_title(''VPSD_sample_maxdiv.'',monitors)/ifit_mean(VPSD_B_ref);';
 %l{end+1}='   VPSD_B.x = VPSD_B.x*100; %%Conversion to cm';
 l{end+1}='   VPSD_B{1} = VPSD_B{1}.*100; %%Conversion to cm';
 %l{end+1}='   VPSD_B=monitors(15)/monitors_ref(15).Data.Mean;';
@@ -5790,28 +5790,28 @@ l{end+1}='   VPSD_B{1} = VPSD_B{1}.*100; %%Conversion to cm';
 %l{end+1}='   VPSD_B=monitors(14)/monitors_ref(14).Data.Max;';
 %end
 l{end+1}='   HDIV_B_ref=assign_by_title(''Hdiv_sample_maxdiv.'',monitors_ref);';
-l{end+1}='   HDIV_B=assign_by_title(''Hdiv_sample_maxdiv.'',monitors)/HDIV_B_ref.Data.Mean;';
+l{end+1}='   HDIV_B=assign_by_title(''Hdiv_sample_maxdiv.'',monitors)/ifit_mean(HDIV_B_ref);';
 %l{end+1}='   HDIV_B=monitors(16)/monitors_ref(16).Data.Mean;';
 l{end+1}='   VDIV_B_ref=assign_by_title(''Vdiv_sample_maxdiv.'',monitors_ref);';
-l{end+1}='   VDIV_B=assign_by_title(''Vdiv_sample_maxdiv.'',monitors)/VDIV_B_ref.Data.Mean;';
+l{end+1}='   VDIV_B=assign_by_title(''Vdiv_sample_maxdiv.'',monitors)/ifit_mean(VDIV_B_ref);';
 %l{end+1}='   VDIV_B=monitors(17)/monitors_ref(17).Data.Mean;';
 l{end+1}='   HACCP_B_ref=assign_by_title(''acceptance_x_divx_maxdiv.'',monitors_ref);';
-l{end+1}='   HACCP_B=assign_by_title(''acceptance_x_divx_maxdiv.'',monitors)/HACCP_B_ref.Data.Mean;';
+l{end+1}='   HACCP_B=assign_by_title(''acceptance_x_divx_maxdiv.'',monitors)/ifit_mean(HACCP_B_ref);';
 %l{end+1}='   HACCP_B.y = HACCP_B.y*100; %%Conversion to cm';
 l{end+1}='   HACCP_B{2} = HACCP_B{2}.*100; %%Conversion to cm';
 %l{end+1}='   HACCP_B=monitors(18)/monitors_ref(18).Data.Mean;';
 l{end+1}='   VACCP_B_ref=assign_by_title(''acceptance_y_divy_maxdiv.'',monitors_ref);';
-l{end+1}='   VACCP_B=assign_by_title(''acceptance_y_divy_maxdiv.'',monitors)/VACCP_B_ref.Data.Mean;';
+l{end+1}='   VACCP_B=assign_by_title(''acceptance_y_divy_maxdiv.'',monitors)/ifit_mean(VACCP_B_ref);';
 %l{end+1}='   VACCP_B.y = VACCP_B.y*100; %%Conversion to cm';
 l{end+1}='   VACCP_B{2} = VACCP_B{2}.*100; %%Conversion to cm';
 %l{end+1}='   VACCP_B=monitors(19)/monitors_ref(19).Data.Mean;';
 l{end+1}='   LAMBDA_ref=assign_by_title(''Lmon_sample.'',monitors_ref);';
-l{end+1}='   LAMBDA=assign_by_title(''Lmon_sample.'',monitors)/LAMBDA_ref.Data.Mean;';
+l{end+1}='   LAMBDA=assign_by_title(''Lmon_sample.'',monitors)/ifit_mean(LAMBDA_ref);';
 %l{end+1}='   LAMBDA=monitors(20)/monitors_ref(20).Data.Mean;';
 l{end+1}='   LAMBDA_RAW_monitor=assign_by_title(''Lmon_sample.'',monitors);';
 %l{end+1}='   LAMBDA_RAW_monitor=monitors(20);';
 l{end+1}='   AROUND_SAMPLE_BT_ref=assign_by_title(''Lmon_sample.'',monitors_ref);';
-l{end+1}='   AROUND_SAMPLE_BT_val=assign_by_title(''Lmon_sample.'',monitors)/AROUND_SAMPLE_BT_ref.Data.Mean;';
+l{end+1}='   AROUND_SAMPLE_BT_val=assign_by_title(''Lmon_sample.'',monitors)/ifit_mean(AROUND_SAMPLE_BT_ref);';
 l{end+1}='   AROUND_SAMPLE_BT=AROUND_SAMPLE_BT_val.Data.values(1)/AROUND_SAMPLE_BT_ref.Data.values(1);';
 %l{end+1}='   AROUND_SAMPLE_BT=monitors(12).Data.values(1)/monitors_ref(12).Data.values(1);';
 l{end+1}='   else';
@@ -6997,6 +6997,17 @@ end
 if not_found
 [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/str2num_safe.m'],['./' Project_name '/output/analysis/.']);
 end
+% move ifit_mean
+not_found = 1;
+for ii = 1:length(namelist)
+    if strcmp(namelist(ii).name,'ifit_mean.m')
+        not_found = 0;
+    end
+end
+if not_found
+[status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/ifit_mean.m'],['./' Project_name '/output/analysis/.']);
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% LELAND2 MODIFICATION (FOM_table 2/2) %%%%%%%%%%%%
