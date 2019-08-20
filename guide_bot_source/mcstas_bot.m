@@ -5919,7 +5919,7 @@ end
 
 %l{end+1}='      axis([0 MaxWB 0 1])';
 l{end+1}='    else';
-l{end+1}='      axis([0 MaxWB 0 LAMBDA_B.Data.Max*1.1])';
+l{end+1}='      axis([0 MaxWB 0 ifit_max(LAMBDA_B)*1.1])';
 l{end+1}='    end';
 l{end+1}='      %%set(gca,''XTick'',[0 0.5 1.0 1.5 2.0 2.5 3.0])';
 l{end+1}='      title([''Wavelength dependence, + are wavelengths for 1d graphs. I='' num2str(LAMBDA_B_RAW)])';
@@ -5928,7 +5928,7 @@ l{end+1}='      set(gca,''Fontsize'',FS)';
 l{end+1}='    if reflogic';
 l{end+1}='      markerheight=0.1;';
 l{end+1}='    else';
-l{end+1}='      markerheight=LAMBDA_B.Data.Max*0.2;';
+l{end+1}='      markerheight=ifit_max(LAMBDA_B)*0.2;';
 l{end+1}='    end';
 l{end+1}='        for j=1:length(wavecenters)';
 l{end+1}='                hold on';
@@ -5971,8 +5971,8 @@ end
 
 l{end+1}=['    axis([' num2str(-div1d*demandscan.Hdiv) ' ' num2str(div1d*demandscan.Hdiv) ' 0 1])'];
 l{end+1}='    else';
-l{end+1}=['    if i==1; max_HDIV_B = HDIV_B.Data.Max;'];
-l{end+1}=['    else max_HDIV_B = max([max_HDIV_B HDIV_B.Data.Max]); end;'];
+l{end+1}=['    if i==1; max_HDIV_B = ifit_max(HDIV_B);'];
+l{end+1}=['    else max_HDIV_B = max([max_HDIV_B ifit_max(HDIV_B)]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-demandscan.Hdiv) ' ' num2str(-demandscan.Hdiv) '],[0 max_HDIV_B*1.1],''--k'');'];
 l{end+1}=['      plot([' num2str(demandscan.Hdiv) ' ' num2str(demandscan.Hdiv) '],[0 max_HDIV_B*1.1],''--k'');'];
@@ -6017,8 +6017,8 @@ end
 %%%%%%%%%%% END OF LELAND MODIFICATION %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 l{end+1}='    else';
-l{end+1}=['    if i==1; max_VDIV_B = VDIV_B.Data.Max;'];
-l{end+1}=['    else max_VDIV_B = max([max_VDIV_B VDIV_B.Data.Max]); end;'];
+l{end+1}=['    if i==1; max_VDIV_B = ifit_max(VDIV_B);'];
+l{end+1}=['    else max_VDIV_B = max([max_VDIV_B ifit_max(VDIV_B)]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-demandscan.Vdiv) ' ' num2str(-demandscan.Vdiv) '],[0 max_VDIV_B*1.1],''--k'');'];
 l{end+1}=['      plot([' num2str(demandscan.Vdiv) ' ' num2str(demandscan.Vdiv) '],[0 max_VDIV_B*1.1],''--k'');'];
@@ -6063,8 +6063,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 l{end+1}='    else';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-0.5*psd1d*demandscan.Hsize) ' ' num2str(0.5*psd1d*demandscan.Hsize) ' 0 HPSD_B.Data.Max*1.1]); end;'];
-l{end+1}=['    if i==1; max_HPSD_B= HPSD_B.Data.Max;'];
-l{end+1}=['    else max_HPSD_B= max([max_HPSD_B HPSD_B.Data.Max]); end;'];
+l{end+1}=['    if i==1; max_HPSD_B= ifit_max(HPSD_B);'];
+l{end+1}=['    else max_HPSD_B= max([max_HPSD_B ifit_max(HPSD_B)]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-0.5*demandscan.Hsize) ' ' num2str(-0.5*demandscan.Hsize) '],[0 max_HPSD_B*1.1],''--k'');'];
 l{end+1}=['      plot([' num2str(0.5*demandscan.Hsize) ' ' num2str(0.5*demandscan.Hsize) '],[0 max_HPSD_B*1.1],''--k'');'];
@@ -6108,8 +6108,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 l{end+1}='    else';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-0.5*psd1d*demandscan.Vsize) ' ' num2str(0.5*psd1d*demandscan.Vsize) ' 0 VPSD_B.Data.Max*1.1]); end;'];
-l{end+1}=['    if i==1; max_VPSD_B= VPSD_B.Data.Max;'];
-l{end+1}=['    else max_VPSD_B= max([max_VPSD_B VPSD_B.Data.Max]); end;'];
+l{end+1}=['    if i==1; max_VPSD_B= ifit_max(VPSD_B);'];
+l{end+1}=['    else max_VPSD_B= max([max_VPSD_B ifit_max(VPSD_B)]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-0.5*demandscan.Vsize) ' ' num2str(-0.5*demandscan.Vsize) '],[0 max_VPSD_B*1.1],''--k'');'];
 l{end+1}=['      plot([' num2str(0.5*demandscan.Vsize) ' ' num2str(0.5*demandscan.Vsize) '],[0 max_VPSD_B*1.1],''--k'');'];
@@ -6152,7 +6152,7 @@ l{end+1}='    xlabel(''Horizontal divergence [deg]'');';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Vertical divergence [deg]'',''fontsize'',FS_medium);';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='        w_min = DIV2D_B.Data.WaveMin;w_max=DIV2D_B.Data.WaveMax;';
+l{end+1}='        w_min = str2num_safe(DIV2D_B.Data.Parameters.WaveMin);w_max=str2num_safe(DIV2D_B.Data.Parameters.WaveMax);';
 l{end+1}='        title([''2d div '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='        title([''2d div Lambda='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -6180,7 +6180,7 @@ l{end+1}='    xlabel(''Horizontal position [cm]'');';
 l{end+1}='    ylabel(''Vertical position [cm]'',''fontsize'',FS_medium);';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='        w_min = PSD2D_B.Data.WaveMin;w_max=PSD2D_B.Data.WaveMax;';
+l{end+1}='        w_min = str2num_safe(PSD2D_B.Data.Parameters.WaveMin);w_max=str2num_safe(PSD2D_B.Data.Parameters.WaveMax);';
 l{end+1}='        title([''2d psd '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='        title([''2d psd Lambda='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -6209,7 +6209,7 @@ l{end+1}='    xlabel(''Horizontal position [cm]'')';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Hor. divergence [deg]'',''fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='    w_min = HACCP_B.Data.WaveMin;w_max=HACCP_B.Data.WaveMax;';
+l{end+1}='    w_min = str2num_safe(HACCP_B.Data.Parameters.WaveMin);w_max=str2num_safe(HACCP_B.Data.Parameters.WaveMax);';
 l{end+1}='    title([''Horizontal accep. dia. '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='    title([''Horizontal accep. dia. Wavelength='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small);';
@@ -6236,7 +6236,7 @@ l{end+1}='    xlabel(''Vertical position [cm]'')';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Ver. divergence [deg]'',''fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='    w_min = VACCP_B.Data.WaveMin;w_max=VACCP_B.Data.WaveMax;';
+l{end+1}='    w_min = str2num_safe(VACCP_B.Data.Parameters.WaveMin);w_max=str2num_safe(VACCP_B.Data.Parameters.WaveMax);';
 l{end+1}='    title([''Vertical accep. dia. '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='    title([''Vertical accep. dia. Wavelength='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small);';
@@ -6285,7 +6285,7 @@ l{end+1}='LAMBDA_B_ALLW_deg=assign_by_title(''Lmon_sample_B.'',monitor_ALLW_degr
 l{end+1}='LAMBDA_B_ALLW=assign_by_title(''Lmon_sample_B.'',monitor_ALLW);';
 l{end+1}='plot(LAMBDA_B_ALLW_deg,''r'')';
 l{end+1}='plot(LAMBDA_B_ALLW,''k'')';
-l{end+1}='ylim([0 LAMBDA_B_ALLW.Data.Max*1.1+1e-10])';
+l{end+1}='ylim([0 ifit_max(LAMBDA_B_ALLW)*1.1+1e-10])';
 l{end+1}='set(gca,''Fontsize'',FS)';
 l{end+1}='ylabel(''Intensity in FOM [Arb]'')';
 l{end+1}='xlabel(''Wavelength [AA]'')';
@@ -6560,10 +6560,10 @@ l{end+1}='     subplot(4,2,1:2)';
 l{end+1}='     hold on';
 %monitor_ESSW(10).Data.Parameters.sizeX
 l{end+1}='     sample_area_cm2 = 10000*str2num_safe(LAMBDA.Data.Parameters.sizeX)*str2num_safe(LAMBDA.Data.Parameters.sizeY);';
-l{end+1}='     norm_factor = LAMBDA.Data.array_1d/(LAMBDA.Data.xlimits(2)-LAMBDA.Data.xlimits(1))/sample_area_cm2;';
+l{end+1}='     norm_factor = ifit_bins_1d(LAMBDA)/(LAMBDA.Data.xlimits(2)-LAMBDA.Data.xlimits(1))/sample_area_cm2;';
 l{end+1}='';
 l{end+1}='     plot(LAMBDA*norm_factor,''k'')';
-l{end+1}='     ylim([0 LAMBDA.Data.Max*norm_factor*1.1+1e-10]);';
+l{end+1}='     ylim([0 ifit_max(LAMBDA)*norm_factor*1.1+1e-10]);';
 l{end+1}='     hold off';
 % Should do something cool here to ensure ticks at wavelength snapshot positions
 l{end+1}='      %%set(gca,''XTick'',[0 0.5 1.0 1.5 2.0 2.5 3.0])';
@@ -6575,7 +6575,7 @@ l{end+1}='      box';
 %l{end+1}='    if reflogic';
 %l{end+1}='      markerheight=0.1;';
 %l{end+1}='    else';
-l{end+1}='      markerheight=LAMBDA.Data.Max*norm_factor*0.1;';
+l{end+1}='      markerheight=ifit_max(LAMBDA)*norm_factor*0.1;';
 %l{end+1}='    end';
 l{end+1}='        for j=1:length(wavecenters)';
 l{end+1}='                hold on';
@@ -6592,7 +6592,7 @@ l{end+1}='    box';
 %l{end+1}='    if reflogic';
 %l{end+1}=['    axis([' num2str(-div1d*demandscan.Hdiv) ' ' num2str(div1d*demandscan.Hdiv) ' 0 1])'];
 %l{end+1}='    else';
-l{end+1}='     max_HDIV = max([max_HDIV HDIV.Data.Max]);';
+l{end+1}='     max_HDIV = max([max_HDIV ifit_max(HDIV)]);';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-div1d*demandscan.Hdiv) ' ' num2str(div1d*demandscan.Hdiv) ' 0 max_HDIV*1.1+1e-10]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-demandscan.Hdiv) ' ' num2str(-demandscan.Hdiv) '],[0 max_HDIV*1.1],''--k'');'];
@@ -6615,7 +6615,7 @@ l{end+1}='    box';
 % l{end+1}='    if reflogic';
 % l{end+1}=['    axis([' num2str(-div1d*demandscan.Vdiv) ' ' num2str(div1d*demandscan.Vdiv) ' 0 1])'];
 % l{end+1}='    else';
-l{end+1}='     max_VDIV = max([max_VDIV VDIV.Data.Max]);';
+l{end+1}='     max_VDIV = max([max_VDIV ifit_max(VDIV)]);';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-div1d*demandscan.Vdiv) ' ' num2str(div1d*demandscan.Vdiv) ' 0 max_VDIV*1.1+1e-10]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-demandscan.Vdiv) ' ' num2str(-demandscan.Vdiv) '],[0 max_VDIV*1.1],''--k'');'];
@@ -6633,7 +6633,7 @@ l{end+1}='';
 l{end+1}='    subplot(4,2,5)';
 l{end+1}='    hold on';
 l{end+1}='    monitor_area_cm2 = 10000*str2num_safe(HPSD.Data.Parameters.sizeY)*(HPSD.Data.xlimits(2)-HPSD.Data.xlimits(1));';
-l{end+1}='    number_of_bins = HPSD.Data.array_1d;';
+l{end+1}='    number_of_bins = ifit_bins_1d(HPSD);';
 l{end+1}='    wavelength_band = str2num_safe(HPSD.Data.Parameters.WaveMax)-str2num_safe(HPSD.Data.Parameters.WaveMin);';
 l{end+1}='    norm_factor = number_of_bins/monitor_area_cm2/wavelength_band;';
 l{end+1}='    plot(HPSD*norm_factor,colors{i})';
@@ -6642,7 +6642,7 @@ l{end+1}='    %%axis([-0.75 0.75 0 1])';
 % l{end+1}='    if reflogic';
 % l{end+1}=['    axis([' num2str(-0.5*psd1d*demandscan.Hsize/100) ' ' num2str(0.5*psd1d*demandscan.Hsize/100) ' 0 1])'];
 % l{end+1}='    else';
-l{end+1}='     max_HPSD = max([max_HPSD HPSD.Data.Max]);';
+l{end+1}='     max_HPSD = max([max_HPSD ifit_max(HPSD)]);';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-psd1d*demandscan.Hsize) ' ' num2str(psd1d*demandscan.Hsize) ' 0 max_HPSD*norm_factor*1.1+1e-10]);end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-0.5*demandscan.Hsize) ' ' num2str(-0.5*demandscan.Hsize) '],[0 max_HPSD*norm_factor*1.1],''--k'');'];
@@ -6660,7 +6660,7 @@ l{end+1}='';
 l{end+1}='    subplot(4,2,6)';
 l{end+1}='    hold on';
 l{end+1}='    monitor_area_cm2 = 10000*str2num_safe(VPSD.Data.Parameters.sizeX)*(VPSD.Data.xlimits(2)-VPSD.Data.xlimits(1));';
-l{end+1}='    number_of_bins = VPSD.Data.array_1d;';
+l{end+1}='    number_of_bins = ifit_bins_1d(VPSD);';
 l{end+1}='    wavelength_band = str2num_safe(VPSD.Data.Parameters.WaveMax)-str2num_safe(VPSD.Data.Parameters.WaveMin);';
 l{end+1}='    norm_factor = number_of_bins/monitor_area_cm2/wavelength_band;';
 l{end+1}='    plot(VPSD*norm_factor,colors{i})';
@@ -6669,7 +6669,7 @@ l{end+1}='    %%axis([-1 1 0 1])';
 % l{end+1}='    if reflogic';
 % l{end+1}=['    axis([' num2str(-0.5*psd1d*demandscan.Vsize/100) ' ' num2str(0.5*psd1d*demandscan.Vsize/100) ' 0 1])'];
 % l{end+1}='    else';
-l{end+1}='     max_VPSD = max([max_VPSD VPSD.Data.Max]);';
+l{end+1}='     max_VPSD = max([max_VPSD ifit_max(VPSD)]);';
 %l{end+1}=['    if i==MaxIndex-1; axis([' num2str(-psd1d*demandscan.Vsize) ' ' num2str(psd1d*demandscan.Vsize) ' 0 max_VPSD*norm_factor*1.1+1e-10]); end;'];
 l{end+1}=['    if i==MaxIndex-1;'];
 l{end+1}=['      plot([' num2str(-0.5*demandscan.Vsize) ' ' num2str(-0.5*demandscan.Vsize) '],[0 max_VPSD*norm_factor*1.1],''--k'');'];
@@ -6709,7 +6709,7 @@ l{end+1}='    xlabel(''Horizontal divergence [deg]'');';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Vertical divergence [deg]'',''fontsize'',FS_medium);';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='        w_min = DIV2D.Data.WaveMin;w_max=DIV2D.Data.WaveMax;';
+l{end+1}='        w_min = str2num_safe(DIV2D.Data.Parameters.WaveMin);w_max=str2num_safe(DIV2D.Data.Parameters.WaveMax);';
 l{end+1}='        title([''2d div '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='        title([''2d div Lambda='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -6737,7 +6737,7 @@ l{end+1}='    xlabel(''Horizontal position [cm]'');';
 l{end+1}='    ylabel(''Vertical position [cm]'',''fontsize'',FS_medium);';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='        w_min = PSD2D.Data.WaveMin;w_max=PSD2D.Data.WaveMax;';
+l{end+1}='        w_min = str2num_safe(PSD2D.Data.Parameters.WaveMin);w_max=str2num_safe(PSD2D.Data.Parameters.WaveMax);';
 l{end+1}='        title([''2d psd '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='        title([''2d psd Lambda='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -6766,7 +6766,7 @@ l{end+1}='    xlabel(''Horizontal position [cm]'')';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Hor. divergence [deg]'',''fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='    w_min = HACCP.Data.WaveMin;w_max=HACCP.Data.WaveMax;';
+l{end+1}='    w_min = str2num_safe(HACCP.Data.Parameters.WaveMin);w_max=str2num_safe(HACCP.Data.Parameters.WaveMax);';
 l{end+1}='    title([''Horizontal accep. dia. '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='    title([''Horizontal accep. dia. Wavelength='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -6793,7 +6793,7 @@ l{end+1}='    xlabel(''Vertical position [cm]'')';
 l{end+1}='    set(gca,''Fontsize'',FS_medium)';
 l{end+1}='    ylabel(''Ver. divergence [deg]'',''fontsize'',FS_medium)';
 l{end+1}='    if i==MaxIndex';
-l{end+1}='    w_min = VACCP.Data.WaveMin;w_max=VACCP.Data.WaveMax;';
+l{end+1}='    w_min = str2num_safe(VACCP.Data.Parameters.WaveMin);w_max=str2num_safe(VACCP.Data.Parameters.WaveMax);';
 l{end+1}='    title([''Vertical accep. dia. '' num2str(w_min) ''-'' num2str(w_max) '' Å''],''fontsize'',FS_small)';
 l{end+1}='    else';
 l{end+1}='    title([''Vertical accep. dia. Wavelength='' num2str(wavecenters(i)) ''A''],''fontsize'',FS_small)';
@@ -7006,6 +7006,26 @@ for ii = 1:length(namelist)
 end
 if not_found
 [status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/ifit_mean.m'],['./' Project_name '/output/analysis/.']);
+end
+% move ifit_max
+not_found = 1;
+for ii = 1:length(namelist)
+    if strcmp(namelist(ii).name,'ifit_max.m')
+        not_found = 0;
+    end
+end
+if not_found
+[status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/ifit_max.m'],['./' Project_name '/output/analysis/.']);
+end
+% move bins_1d
+not_found = 1;
+for ii = 1:length(namelist)
+    if strcmp(namelist(ii).name,'ifit_bins_1d.m')
+        not_found = 0;
+    end
+end
+if not_found
+[status,message,messageid]=copyfile([options_general.guide_bot_path '/guide_bot_source/ifit_bins_1d.m'],['./' Project_name '/output/analysis/.']);
 end
 
 
