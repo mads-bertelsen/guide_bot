@@ -52,12 +52,12 @@ switch options_general.cluster
         end
         % list of nessecary modules
         options_general.modules_node{1} = 'mcstas/2.6.1';
-        options_general.modules_node{2} = 'intel/17.0';
-        options_general.modules_node{3} = 'openmpi/4.0_intel17';
+        options_general.modules_node{2} = 'gcc/9.2.0';
+        options_general.modules_node{3} = 'openmpi/3.0_gcc920';
         
         options_general.modules_compile{1} = 'mcstas/2.6.1';
-        options_general.modules_compile{2} = 'intel/17.0';
-        options_general.modules_compile{3} = 'openmpi/4.0_intel17';
+        options_general.modules_compile{2} = 'gcc/9.2.0';
+        options_general.modules_compile{3} = 'openmpi/3.0_gcc920';
     case 'PSI'
         options_general.cluster_path = '/home/l_bertelsen/';
         if ~isfield(options_general,'queue')
@@ -7182,6 +7182,7 @@ l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
 end
 l{end+1}='echo $NUMCORES > NUMCORES.DAT';
 l{end+1}='';
+l{end+1}='source /etc/profile.d/modules.sh';
 for jj = 1:length(options_general.modules_node)
 l{end+1}=['module load ' options_general.modules_node{jj}]; 
 end
