@@ -41,18 +41,23 @@ switch options_general.cluster
                 options_general.time = '1:59:00';
             case 'long'
                 options_general.time = '23:59:00';
+            case 'newlong'
+                options_general.time = '23:59:00';
+            case 'quark'
+                options_general.time = '23:59:00';
             case 'verylong'
                 options_general.time = '2-23:59:00';
             otherwise
                 disp(['ERROR, options.queue = ' options_general.queue ' is invalid when using ESSS DMSC cluster']);
         end
         % list of nessecary modules
-        options_general.modules_node{1} = 'mcstas/2.3';
-        options_general.modules_node{2} = 'intel';
-        options_general.modules_node{3} = 'openmpi/intel.qlc';
+        options_general.modules_node{1} = 'mcstas/2.6.1';
+        options_general.modules_node{2} = 'intel/17.0';
+        options_general.modules_node{3} = 'openmpi/4.0_intel17';
         
-        options_general.modules_compile{1} = 'mcstas/2.3';
-        options_general.modules_compile{2} = 'openmpi/intel.qlc';
+        options_general.modules_compile{1} = 'mcstas/2.6.1';
+        options_general.modules_compile{2} = 'intel/17.0';
+        options_general.modules_compile{3} = 'openmpi/4.0_intel17';
     case 'PSI'
         options_general.cluster_path = '/home/l_bertelsen/';
         if ~isfield(options_general,'queue')
@@ -7166,6 +7171,12 @@ l{end+1}='#SBATCH --exclusive';
 l{end+1}='';
 if strcmp(options_general.queue,'verylong')
 l{end+1}='NUMCORES=`echo "$SLURM_NNODES 16 * p "| dc`';    
+elseif strcmp(options_general.queue,'long')
+l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
+elseif strcmp(options_general.queue,'quark')
+l{end+1}='NUMCORES=`echo "$SLURM_NNODES 24 * p "| dc`';
+elseif strcmp(options_general.queue,'newlong')
+l{end+1}='NUMCORES=`echo "$SLURM_NNODES 24 * p "| dc`';
 else
 l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
 end
@@ -7327,21 +7338,21 @@ if enable_nested_compile
 l{end+1}='export MCSTAS_CFLAGS="-g -lm -O2 -fnested-functions"';
 end
 if options_general.gravity == 1
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_optimize.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_optimize_ess.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_optimize_coating.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_analyze.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_analyze_coating.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_analyze_ess.instr'];
-l{end+1}=['mcrun -n 0 -g -c --mpi ./' filename '_analyze_ess_coating.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_optimize.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_optimize_ess.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_optimize_coating.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_analyze.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_analyze_coating.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_analyze_ess.instr'];
+l{end+1}=['mcrun -n 0 -g -c --mpi 2 ./' filename '_analyze_ess_coating.instr'];
 else
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_optimize.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_optimize_ess.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_optimize_coating.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_analyze.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_analyze_coating.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_analyze_ess.instr'];
-l{end+1}=['mcrun -n 0 -c --mpi ./' filename '_analyze_ess_coating.instr'];    
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_optimize.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_optimize_ess.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_optimize_coating.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_analyze.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_analyze_coating.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_analyze_ess.instr'];
+l{end+1}=['mcrun -n 0 -c --mpi 2 ./' filename '_analyze_ess_coating.instr'];
 end
 
 if strcmp(source_component,'ESS_pancake')
