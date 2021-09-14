@@ -7174,9 +7174,9 @@ l{end+1}='NUMCORES=`echo "$SLURM_NNODES 16 * p "| dc`';
 elseif strcmp(options_general.queue,'long')
 l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
 elseif strcmp(options_general.queue,'quark')
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 24 * p "| dc`';
+l{end+1}='NUMCORES=`echo "$SLURM_NNODES 28 * p "| dc`';
 elseif strcmp(options_general.queue,'newlong')
-l{end+1}='NUMCORES=`echo "$SLURM_NNODES 24 * p "| dc`';
+l{end+1}='NUMCORES=`echo "$SLURM_NNODES 28 * p "| dc`';
 else
 l{end+1}='NUMCORES=`echo "$SLURM_NNODES 12 * p "| dc`';
 end
